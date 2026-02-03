@@ -1,22 +1,41 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+import "../styles/global.css";
+import Navigation from "../components/system/Navigation.vue";
+import AuroraBackground from "../components/inspira/AuroraBackground.vue";
+import { ui, defaultLang } from "../i18n/porfolio";
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+const currentLang = Astro.currentLocale || defaultLang;
+const t = ui[currentLang as keyof typeof ui] || ui[defaultLang];
+---
+
+<html lang={currentLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Rduan's home</title>
+    <script is:inline>
+      (function () {
+        // 檢查 localStorage 是否有儲存設定
+        const storedTheme = localStorage.getItem("theme");
+        // 檢查系統偏好
+        const systemTheme = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+
+        if (storedTheme === "dark" || (!storedTheme && systemTheme)) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <Navigation client:load currentLang={currentLang} />
+    <AuroraBackground client:load>
+      <slot />
+    </AuroraBackground>
+  </body>
+</html>

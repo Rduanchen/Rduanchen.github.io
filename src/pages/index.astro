@@ -1,11 +1,178 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import EncryptedText from "../components/inspira/EncryptedText.vue";
+import RainbowButton from "../components/inspira/RainbowButton.vue";
+import CardSpotlight from "../components/inspira/CardSpotlight.vue";
+import { ui, defaultLang } from "../i18n/porfolio";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// 1. 取得當前語言
+const currentLang = Astro.currentLocale || defaultLang;
+// 2. 取得對應翻譯包 (若找不到則 fallback 到英文)
+const t = ui[currentLang as keyof typeof ui] || ui[defaultLang];
+
+const revealDelayMs = 50;
+
+// 3. 解決 CardSpotlight 顏色問題
+// 我們不依賴 JS 判斷 isDark，而是傳遞一個 CSS 變數字串給組件
+// 當 Tailwind 的 'dark' class 啟動時，這個 CSS 變數的值會自動改變
+const gradientColorVar = "var(--spotlight-color)";
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="My Tech Portfolio">
+  <!-- 定義全域的 CSS 變數供 CardSpotlight 使用 -->
+  <style is:global>
+    :root {
+      --spotlight-color: #a5b4fc; /* Light mode color (indigo-300) */
+    }
+    .dark {
+      --spotlight-color: #2563eb; /* Dark mode color (blue-600) */
+    }
+  </style>
+
+  <!-- 修正：增加一個全版面的捲動容器 -->
+  <!-- z-10 relative 確保內容位於背景特效之上 -->
+  <!-- h-full overflow-y-auto 確保內容過長時可以捲動 -->
+  <div class="relative z-10 w-full h-full overflow-y-auto">
+    <!-- 增加 pb-24 (padding-bottom) 確保滑到底部時有足夠呼吸空間，不會被切到 -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-24">
+      <!-- 第一部分：左右排版 -->
+      <section
+        class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center mb-16"
+      >
+        <!-- 左側：個人簡介 -->
+        <div
+          class="order-2 md:order-1 flex flex-col items-center md:items-start text-center md:text-left space-y-6"
+        >
+          <h1
+            class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white"
+          >
+            <EncryptedText
+              client:only="vue"
+              text={t["hero.greeting"]}
+              encryptedClass="text-neutral-500"
+              revealedClass="dark:text-white text-black"
+              revealDelayMs={revealDelayMs}
+            />
+          </h1>
+          <h2
+            class="text-2xl md:text-3xl font-semibold text-gray-800 dark:text-gray-200"
+          >
+            <EncryptedText
+              client:only="vue"
+              text={t["hero.welcome"]}
+              encryptedClass="text-neutral-500"
+              revealedClass="dark:text-white text-black"
+              revealDelayMs={revealDelayMs}
+            />
+          </h2>
+          <p
+            class="text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed"
+          >
+            {t["hero.desc"]}
+          </p>
+
+          <!-- Links -->
+          <div class="flex flex-wrap justify-center md:justify-start gap-4">
+            <a href="https://github.com/Rduanchen" target="_blank">
+              <RainbowButton class="text-sm">{t["btn.github"]}</RainbowButton>
+            </a>
+            <a href="https://www.instagram.com/youduan4045/" target="_blank">
+              <RainbowButton class="text-sm">{t["btn.instagram"]}</RainbowButton
+              >
+            </a>
+            <a
+              href="https://www.facebook.com/chen.you.duan.794349/"
+              target="_blank"
+            >
+              <RainbowButton class="text-sm">{t["btn.facebook"]}</RainbowButton>
+            </a>
+            <a href="mailto:chenyouduan@gmail.com" target="_blank">
+              <RainbowButton class="text-sm">{t["btn.email"]}</RainbowButton>
+            </a>
+          </div>
+        </div>
+
+        <!-- 右側：照片 -->
+        <div
+          class="order-1 md:order-2 flex flex-col items-center justify-center space-y-6"
+        >
+          <div
+            class="w-48 h-48 md:w-64 md:h-64 rounded-full shadow-2xl border-4 border-gray-200 dark:border-gray-700 overflow-hidden transform hover:scale-105 transition-transform duration-300"
+          >
+            <img
+              src="/bio/me.png"
+              alt="Profile Picture"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <h1
+            class="text-center text-xl font-semibold text-gray-900 dark:text-white"
+          >
+            Rduan (陳宥端)
+          </h1>
+        </div>
+      </section>
+
+      <!-- 第二部分：卡片區域 -->
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card 1: Education -->
+        <CardSpotlight
+          client:load
+          class="p-6 h-full flex flex-col"
+          gradient-color={gradientColorVar}
+        >
+          <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
+            {t["card.education"]}
+          </h2>
+          <ul
+            class="text-gray-700 dark:text-gray-300 list-disc list-inside space-y-2 flex-grow"
+          >
+            <li>{t["card.education.uni"]}</li>
+            <li>{t["card.education.hs"]}</li>
+          </ul>
+        </CardSpotlight>
+
+        <!-- Card 2: Skills -->
+        <CardSpotlight
+          client:load
+          class="p-6 h-full flex flex-col"
+          gradient-color={gradientColorVar}
+        >
+          <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
+            {t["card.skills"]}
+          </h2>
+          <ul
+            class="text-gray-700 dark:text-gray-300 list-disc list-inside space-y-2 flex-grow"
+          >
+            <li>Frontend: HTML, CSS, JS, Vue</li>
+            <li>Backend: Node.js, Express</li>
+            <li>Desktop: Electron</li>
+            <li>Database: PostgreSQL</li>
+            <li>Software Engineering</li>
+            <li>Tools: Figma, Notion</li>
+          </ul>
+        </CardSpotlight>
+
+        <!-- Card 3: Experience -->
+        <CardSpotlight
+          client:load
+          class="p-6 h-full flex flex-col"
+          gradient-color={gradientColorVar}
+        >
+          <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-4">
+            {t["card.experience"]}
+          </h2>
+          <ul
+            class="text-gray-700 dark:text-gray-300 list-disc list-inside space-y-2 flex-grow"
+          >
+            <li>{t["card.experience.ptw"]}</li>
+            <li>{t["card.experience.ect"]}</li>
+            <li>{t["card.experience.gsh"]}</li>
+            <li>{t["card.experience.hws"]}</li>
+            <li>{t["card.experience.sc"]}</li>
+          </ul>
+        </CardSpotlight>
+      </section>
+    </div>
+  </div>
 </Layout>

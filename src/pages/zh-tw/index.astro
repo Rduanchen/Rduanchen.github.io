@@ -1,0 +1,7 @@
+---
+import PortfolioPage from "../index.astro";
+console.log(Astro.currentLocale);
+---
+
+<!-- Astro 會自動偵測到這個檔案在 /zh-tw/ 資料夾下 --><!-- 所以 PortfolioPage 內部的 Astro.currentLocale 會自動變成 'zh-tw' --><!-- 進而自動讀取 ui.ts 裡面的中文翻譯 -->
+<PortfolioPage client:load />
