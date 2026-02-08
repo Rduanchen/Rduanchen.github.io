@@ -1,0 +1,42 @@
+---
+import { getCollection } from "astro:content";
+
+import Layout from "../../layouts/Layout.astro";
+const projects = (await getCollection("projects")).sort(
+  (a: any, b: any) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+console.log(projects);
+---
+
+<Layout>
+  <h1>我的所有作品</h1>
+  <!-- Tailwind -->
+  <a href="/" class="text-blue-500 hover:underline">← 回到首頁</a>
+
+  <div class="grid">
+    {
+      projects.map((post) => (
+        <li>
+          <a href={`/projects/${post.id}/`}>
+            {/* {post.data.heroImage && (
+              <Image
+                width={720}
+                height={360}
+                src={post.data.heroImage}
+                alt=""
+              />
+            )} */}
+            <h4 class="title">{post.data.title}</h4>
+            <p class="date">
+              {post.data.pubDate.toLocaleDateString("zh-Hans-CN", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </p>
+          </a>
+        </li>
+      ))
+    }
+  </div>
+</Layout>

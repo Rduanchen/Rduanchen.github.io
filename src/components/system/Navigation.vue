@@ -51,8 +51,8 @@ const switchLang = (targetLang) => {
 const navLinks = [
   { name: 'Home', href: props.currentLang === 'zh-tw' ? '/zh-tw/' : '/' },
   { name: 'Projects', href: '#projects' }, // 錨點通常不變
-  { name: 'Blogs', href: '#blogs' },
-  { name: 'Contact', href: '#contact' },
+  // { name: 'Blogs', href: '#blogs' },
+  // { name: 'Contact', href: '#contact' },
 ];
 </script>
 

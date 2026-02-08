@@ -1,0 +1,26 @@
+---
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+export async function getStaticPaths() {
+  const posts = await getCollection("projects");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: post,
+  }));
+}
+type Props = CollectionEntry<"projects">;
+
+const post = Astro.props;
+const { Content } = await render(post);
+---
+
+<Layout>
+  <a href="/projects" class="text-blue-500 hover:underline">← 回到作品列表</a>
+  <article class="prose prose-slate lg:prose-xl max-w-none">
+    {/* 加上 prose 類別，max-w-none 讓寬度隨容器調整 */}
+    <h1>{post.data.title}</h1>
+    <div class="meta">發布日期：{post.data.pubDate.toLocaleDateString()}</div>
+    <hr />
+    <Content />
+  </article>
+</Layout>

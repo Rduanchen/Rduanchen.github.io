@@ -34,8 +34,15 @@ const t = ui[currentLang as keyof typeof ui] || ui[defaultLang];
   </head>
   <body>
     <Navigation client:load currentLang={currentLang} />
-    <AuroraBackground client:load>
-      <slot />
-    </AuroraBackground>
+    <main class="relative w-full">
+      <div class="fixed inset-0 -z-10">
+        <AuroraBackground client:load />
+      </div>
+
+      <section class="relative z-10">
+        <slot />
+      </section>
+    </main>
+    <!-- <Navigation client:load currentLang={currentLang} /> -->
   </body>
 </html>
