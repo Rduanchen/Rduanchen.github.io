@@ -1,11 +1,14 @@
 ---
 import "../styles/global.css";
 import Navigation from "../components/system/Navigation.vue";
-import AuroraBackground from "../components/inspira/AuroraBackground.vue";
-import { ui, defaultLang } from "../i18n/porfolio";
+import { defaultLang } from "../i18n/porfolio";
 
+interface Props {
+  title?: string;
+}
+
+const { title = "Rduan's portfolio" } = Astro.props as Props;
 const currentLang = Astro.currentLocale || defaultLang;
-const t = ui[currentLang as keyof typeof ui] || ui[defaultLang];
 ---
 
 <html lang={currentLang}>
@@ -15,15 +18,11 @@ const t = ui[currentLang as keyof typeof ui] || ui[defaultLang];
     <link rel="icon" type="image/png" href="/icon.png" />
     <link rel="apple-touch-icon" href="/icon.png" />
     <meta name="generator" content={Astro.generator} />
-    <title>Rduan's home</title>
+    <title>{title}</title>
     <script is:inline>
       (function () {
-        // 檢查 localStorage 是否有儲存設定
         const storedTheme = localStorage.getItem("theme");
-        // 檢查系統偏好
-        const systemTheme = window.matchMedia(
-          "(prefers-color-scheme: dark)",
-        ).matches;
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
         if (storedTheme === "dark" || (!storedTheme && systemTheme)) {
           document.documentElement.classList.add("dark");
@@ -36,14 +35,9 @@ const t = ui[currentLang as keyof typeof ui] || ui[defaultLang];
   <body>
     <Navigation client:load currentLang={currentLang} />
     <main class="relative w-full">
-      <div class="fixed inset-0 -z-10">
-        <AuroraBackground client:load />
-      </div>
-
       <section class="relative z-10">
         <slot />
       </section>
     </main>
-    <!-- <Navigation client:load currentLang={currentLang} /> -->
   </body>
 </html>

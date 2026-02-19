@@ -1,17 +1,15 @@
 ---
 import { getCollection } from "astro:content";
-import ContentLayout from "../../layouts/ContentLayout.astro";
-import CardSpotlight from "../../components/inspira/CardSpotlight.vue";
-import LampEffect from "../../components/inspira/LampEffect.vue";
+import ContentLayout from "../../../layouts/ContentLayout.astro";
+import CardSpotlight from "../../../components/inspira/CardSpotlight.vue";
+import LampEffect from "../../../components/inspira/LampEffect.vue";
 
 const projects = (await getCollection("projects")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
-
-const locale = Astro.currentLocale === "zh-tw" ? "zh-TW" : "en-US";
 ---
 
-<ContentLayout title="Projects | Rduan">
+<ContentLayout title="作品集 | Rduan">
   <div class="fixed inset-0 -z-10">
     <LampEffect client:load class="min-h-screen" />
   </div>
@@ -19,13 +17,13 @@ const locale = Astro.currentLocale === "zh-tw" ? "zh-TW" : "en-US";
   <div class="mx-auto w-full max-w-6xl px-4 pb-12 pt-10 md:px-6 lg:pb-16 lg:pt-12">
     <div class="relative mb-10 overflow-hidden rounded-2xl border border-border/80 bg-white/70 p-6 text-center shadow-xl shadow-black/20 backdrop-blur-md dark:bg-zinc-900/70 dark:shadow-black/50 sm:p-8">
       <div class="flex w-full flex-col items-center gap-4">
-        <p class="text-sm text-zinc-700 dark:text-zinc-300">Project Archive</p>
-        <h1 class="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white md:text-4xl">Projects</h1>
+        <p class="text-sm text-zinc-700 dark:text-zinc-300">專案總覽</p>
+        <h1 class="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white md:text-4xl">作品集</h1>
         <a
-          href="/"
+          href="/zh-tw/"
           class="rounded-md border border-border/80 bg-card/90 px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
         >
-          ← Home
+          ← 回到首頁
         </a>
       </div>
     </div>
@@ -33,7 +31,7 @@ const locale = Astro.currentLocale === "zh-tw" ? "zh-TW" : "en-US";
     <ul class="grid list-none gap-6 p-0 md:grid-cols-2">
       {projects.map((post) => (
         <li class="h-full">
-          <a href={`/projects/${post.id}/`} class="block h-full">
+          <a href={`/zh-tw/projects/${post.id}/`} class="block h-full">
             <CardSpotlight
               client:load
               class="h-full p-6 bg-card/95 ring-1 ring-border/70 shadow-xl shadow-black/20 dark:shadow-black/55 backdrop-blur-sm"
@@ -42,7 +40,7 @@ const locale = Astro.currentLocale === "zh-tw" ? "zh-TW" : "en-US";
               <div class="flex h-full flex-col gap-4">
                 <div class="space-y-2">
                   <p class="text-xs text-muted-foreground">
-                    {post.data.pubDate.toLocaleDateString(locale, {
+                    {post.data.pubDate.toLocaleDateString("zh-TW", {
                       year: "numeric",
                       month: "long",
                       day: "numeric",

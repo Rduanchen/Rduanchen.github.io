@@ -1,6 +1,6 @@
 ---
 import { type CollectionEntry, getCollection, render } from "astro:content";
-import ContentLayout from "../../layouts/ContentLayout.astro";
+import ContentLayout from "../../../layouts/ContentLayout.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("projects");
@@ -16,18 +16,16 @@ const post = Astro.props as Props;
 const { Content, headings } = await render(post);
 const tocItems = headings.filter((heading) => heading.depth <= 2);
 const subtitle = post.data.subtitle ?? post.data.description;
-
-const locale = Astro.currentLocale === "zh-tw" ? "zh-TW" : "en-US";
 ---
 
-<ContentLayout title={`${post.data.title} | Projects`}>
+<ContentLayout title={`${post.data.title} | 作品集`}>
   <div class="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(148,163,184,0.28),transparent_55%),linear-gradient(180deg,#f8fafc_0%,#eef2ff_50%,#e2e8f0_100%)] dark:bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.14),transparent_55%),linear-gradient(180deg,#09090b_0%,#0f172a_50%,#020617_100%)]" />
 
   <div class="mx-auto grid w-full max-w-7xl grid-cols-1 justify-center gap-8 px-4 py-10 md:px-6 lg:grid-cols-[220px_minmax(0,820px)] lg:gap-12 lg:py-14">
     <aside class="hidden lg:block">
       {tocItems.length > 0 && (
         <nav class="sticky top-24 rounded-xl border border-border/70 bg-white/90 p-4 shadow-lg shadow-slate-300/40 backdrop-blur dark:bg-zinc-900/90 dark:shadow-black/30">
-          <p class="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">On this page</p>
+          <p class="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">本頁段落</p>
           <ul class="space-y-1">
             {tocItems.map((heading) => (
               <li>
@@ -51,10 +49,10 @@ const locale = Astro.currentLocale === "zh-tw" ? "zh-TW" : "en-US";
 
     <article class="mx-auto w-full rounded-2xl border border-border/70 bg-white/95 p-5 shadow-2xl shadow-slate-300/35 dark:bg-zinc-900/95 dark:shadow-black/45 md:p-8">
       <a
-        href="/projects"
+        href="/zh-tw/projects"
         class="mb-6 inline-flex rounded-md border border-border px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
       >
-        ← Back to projects
+        ← 回到作品列表
       </a>
 
       {post.data.image && (
@@ -68,7 +66,7 @@ const locale = Astro.currentLocale === "zh-tw" ? "zh-TW" : "en-US";
 
       <header class="mb-8 border-b border-border pb-6">
         <p class="mb-2 text-sm text-muted-foreground">
-          {post.data.pubDate.toLocaleDateString(locale, {
+          {post.data.pubDate.toLocaleDateString("zh-TW", {
             year: "numeric",
             month: "long",
             day: "numeric",

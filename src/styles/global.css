@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin '@tailwindcss/typography';
+@import "@mdi/font/css/materialdesignicons.min.css";
+@import "@fontsource/fira-code/400.css";
+@import "@fontsource/fira-code/500.css";
+@import "@fontsource/fira-code/600.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -75,19 +79,19 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-    --animate-aurora: aurora 60s linear infinite;
-    @keyframes aurora {
-        from {
-        background-position:
-            50% 50%,
-            50% 50%;
-        }
-        to {
-        background-position:
-            350% 50%,
-            350% 50%;
-        }
+  --animate-aurora: aurora 60s linear infinite;
+  @keyframes aurora {
+    from {
+      background-position:
+        50% 50%,
+        50% 50%;
     }
+    to {
+      background-position:
+        350% 50%,
+        350% 50%;
+    }
+  }
 }
 
 @layer base {
@@ -96,6 +100,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: "Fira Code", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
   }
 }
 
