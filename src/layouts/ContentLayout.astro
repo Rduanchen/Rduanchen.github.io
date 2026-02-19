@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import Navigation from "../components/system/Navigation.vue";
+import { ClientRouter } from "astro:transitions";
 import { defaultLang } from "../i18n/porfolio";
 
 interface Props {
@@ -15,6 +16,7 @@ const currentLang = Astro.currentLocale || defaultLang;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <ClientRouter />
     <link rel="icon" type="image/png" href="/icon.png" />
     <link rel="apple-touch-icon" href="/icon.png" />
     <meta name="generator" content={Astro.generator} />

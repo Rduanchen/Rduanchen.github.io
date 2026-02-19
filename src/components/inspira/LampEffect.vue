@@ -73,9 +73,8 @@ const delayInSeconds = computed(() => `${props.delay}s`);
 
       <!-- Glowing Line -->
       <div
-        class="animate-glowing-line absolute inset-auto z-50 h-0.5 w-60 -translate-y-28 bg-sky-400 dark:bg-cyan-400"
+        class="animate-glowing-line absolute inset-auto z-50 h-0.5 w-30 -translate-y-28 bg-sky-400 dark:bg-cyan-400"
       />
-
       <div
         class="absolute inset-auto z-40 h-44 w-full translate-y-[-12.5rem] bg-slate-100 dark:bg-slate-950"
       />
@@ -124,7 +123,7 @@ const delayInSeconds = computed(() => `${props.delay}s`);
     width: 15rem;
   }
   to {
-    width: 30rem;
+    width: 20rem;
   }
 }
 

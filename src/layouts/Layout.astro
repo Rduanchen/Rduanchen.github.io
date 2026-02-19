@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Navigation from "../components/system/Navigation.vue";
 import AuroraBackground from "../components/inspira/AuroraBackground.vue";
+import { ClientRouter } from "astro:transitions";
 import { ui, defaultLang } from "../i18n/porfolio";
 
 const currentLang = Astro.currentLocale || defaultLang;
@@ -12,6 +13,7 @@ const t = ui[currentLang as keyof typeof ui] || ui[defaultLang];
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <ClientRouter />
     <link rel="icon" type="image/png" href="/icon.png" />
     <link rel="apple-touch-icon" href="/icon.png" />
     <meta name="generator" content={Astro.generator} />

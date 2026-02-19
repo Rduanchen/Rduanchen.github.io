@@ -10,13 +10,9 @@ const projects = (await getCollection("projects")).sort(
 ---
 
 <ContentLayout title="作品集 | Rduan">
-  <div class="fixed inset-0 -z-10">
-    <LampEffect client:load class="min-h-screen" />
-  </div>
-
-  <div class="mx-auto w-full max-w-6xl px-4 pb-12 pt-10 md:px-6 lg:pb-16 lg:pt-12">
-    <div class="relative mb-10 overflow-hidden rounded-2xl border border-border/80 bg-white/70 p-6 text-center shadow-xl shadow-black/20 backdrop-blur-md dark:bg-zinc-900/70 dark:shadow-black/50 sm:p-8">
-      <div class="flex w-full flex-col items-center gap-4">
+  <LampEffect client:load class="min-h-screen">
+    <div class="mx-auto w-full max-w-6xl px-4 pb-12 md:px-6 lg:pb-16">
+      <div class="mb-10 flex w-full flex-col items-center gap-4 text-center">
         <p class="text-sm text-zinc-700 dark:text-zinc-300">專案總覽</p>
         <h1 class="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white md:text-4xl">作品集</h1>
         <a
@@ -26,46 +22,46 @@ const projects = (await getCollection("projects")).sort(
           ← 回到首頁
         </a>
       </div>
+
+      <ul class="grid list-none gap-6 p-0 md:grid-cols-2">
+        {projects.map((post) => (
+          <li class="h-full">
+            <a href={`/zh-tw/projects/${post.id}/`} class="block h-full">
+              <CardSpotlight
+                client:load
+                class="h-full p-6 bg-card/95 ring-1 ring-border/70 shadow-xl shadow-black/20 dark:shadow-black/55 backdrop-blur-sm"
+                gradient-color="var(--card-spotlight)"
+              >
+                <div class="flex h-full flex-col gap-4">
+                  <div class="space-y-2">
+                    <p class="text-xs text-muted-foreground">
+                      {post.data.pubDate.toLocaleDateString("zh-TW", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </p>
+                    <h2 class="text-xl font-semibold leading-tight">{post.data.title}</h2>
+                    <p class="line-clamp-3 text-sm text-muted-foreground">{post.data.description}</p>
+                  </div>
+
+                  <div class="mt-auto flex flex-wrap gap-2">
+                    {post.data.tags.map((tag) => (
+                      <span
+                        class="rounded-full border border-zinc-700 bg-zinc-900/90 px-2.5 py-1 text-xs font-medium text-zinc-100 shadow-sm shadow-black/30 dark:border-zinc-500 dark:bg-zinc-800 dark:text-zinc-100"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </CardSpotlight>
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
-
-    <ul class="grid list-none gap-6 p-0 md:grid-cols-2">
-      {projects.map((post) => (
-        <li class="h-full">
-          <a href={`/zh-tw/projects/${post.id}/`} class="block h-full">
-            <CardSpotlight
-              client:load
-              class="h-full p-6 bg-card/95 ring-1 ring-border/70 shadow-xl shadow-black/20 dark:shadow-black/55 backdrop-blur-sm"
-              gradient-color="var(--card-spotlight)"
-            >
-              <div class="flex h-full flex-col gap-4">
-                <div class="space-y-2">
-                  <p class="text-xs text-muted-foreground">
-                    {post.data.pubDate.toLocaleDateString("zh-TW", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </p>
-                  <h2 class="text-xl font-semibold leading-tight">{post.data.title}</h2>
-                  <p class="line-clamp-3 text-sm text-muted-foreground">{post.data.description}</p>
-                </div>
-
-                <div class="mt-auto flex flex-wrap gap-2">
-                  {post.data.tags.map((tag) => (
-                    <span
-                      class="rounded-full border border-zinc-700 bg-zinc-900/90 px-2.5 py-1 text-xs font-medium text-zinc-100 shadow-sm shadow-black/30 dark:border-zinc-500 dark:bg-zinc-800 dark:text-zinc-100"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </CardSpotlight>
-          </a>
-        </li>
-      ))}
-    </ul>
-  </div>
+  </LampEffect>
 </ContentLayout>
 
 <style is:global>
