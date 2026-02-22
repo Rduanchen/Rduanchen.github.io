@@ -1,6 +1,7 @@
 ---
 import { type CollectionEntry, getCollection, render } from "astro:content";
 import ContentLayout from "../../layouts/ContentLayout.astro";
+import { Image } from 'astro:assets';
 
 export async function getStaticPaths() {
   const posts = await getCollection("projects");
@@ -58,11 +59,10 @@ const locale = Astro.currentLocale === "zh-tw" ? "zh-TW" : "en-US";
       </a>
 
       {post.data.image && (
-        <img
+        <Image
           src={post.data.image}
-          alt={post.data.title}
-          class="mb-8 h-64 w-full rounded-xl object-cover md:h-80"
-          loading="eager"
+          alt={`${post.data.title} cover image`}
+          class="mb-8 h-50 w-full rounded-xl object-cover md:h-80"
         />
       )}
 

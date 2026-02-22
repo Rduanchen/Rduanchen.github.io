@@ -1,0 +1,135 @@
+---
+title: "血壓好幫手"
+subtitle: "一個免費、可分享數據給親友的血紀錄系統"
+description: "這是一個血壓紀錄系統，可以分享資料給親友，也可以設定血壓警告通知。"
+pubDate: "2026-02-21"
+image: "./logo.png"
+tags: ["Vue", "Express", "PostgreSQL"]
+---
+
+import newSample from "./new-sample.png";
+import oldSample from "./old-sample.png";
+import navigationSample from "./navigation-sample.jpg";
+import onePage from "./one-page.jpg";
+import sample1 from "./sample1.jpg";
+import sample2 from "./sample2.jpg";
+
+### 立刻使用，完全免費:
+
+[https://bp-together.rduan.org](https://bp-together.rduan.org)
+
+{/* <img src="./record-zh.png" alt="血壓紀錄頁面" /> */}
+
+![血壓紀錄頁面](./record-zh.png)
+
+# 專案緣起:
+
+家族中有高血壓病史，家中長輩大多都需要監測血壓，但市面上的血壓紀錄 App 大多需要付費，且對長輩來說介面不友善，因此決定開發一個免費且簡單易用的血壓紀錄系統，讓家人可以輕鬆記錄血壓數據，並且分享給親友，還可以設定血壓過高的警告通知。
+
+# 痛點分析:
+
+- 大多數系統分享功能需要付費
+- 介面對高齡使用者不友善
+- 無法設定血壓警告通知
+- 分享機制不完整
+
+# 研究心得:
+
+## 關於 UI: 長輩們喜歡的介面是甚麼?
+
+經過觀察自家阿嬤的使用習慣，我得出長輩們喜歡的介面具有以下的特色
+
+### 1. 極為精簡的頁面設計
+
+> 任何多餘的文字、UI 元素，都將為長輩帶來困惑
+
+<div class="grid grid-cols-2 gap-6">
+  <figure class="flex flex-col items-center">
+    <img src={oldSample.src} alt="舊版設計" class="w-full h-auto rounded-lg shadow-sm" />
+    <figcaption class="mt-2 text-sm text-gray-500 font-medium">
+      舊版，有多餘的文字引導，對長輩來說反而造成困擾
+    </figcaption>
+  </figure>
+
+  <figure class="flex flex-col items-center">
+    <img src={newSample.src} alt="新版設計" class="w-full h-auto rounded-lg shadow-md border-2 border-blue-100" />
+    <figcaption class="mt-2 text-sm text-blue-600 font-bold">
+      新版，極為精簡的設計，去除多餘的文字引導，更適合長輩使用
+    </figcaption>
+  </figure>
+</div>
+
+我們現在的設計，習慣使用文字引導使用者操作，但對長輩來說，這些文字反而會造成困擾，因此最好去除這些多餘的資訊。  
+在先前的系統，我會加上 placeholder 來告訴使用者需要輸入甚麼，但對長輩來說，這些 placeholder 反而會造成困擾，使得他們沒有辦法意識到這些 placeholder 是需要被替換的，因此，我們應該將其去除
+
+### 2. 按鈕導覽(Button Navigation)
+
+每多一個操作，對長輩來說就多一個困難，因此我們應該盡可能的減少操作步驟。
+經過觀察自家的阿嬤，我發現或許是因為皮膚乾燥的關係，導致她的觸控不太靈敏，因此在設計上，我們應該盡可能的減少操作步驟，特別是"滑動"的操作。
+
+<div class="grid grid-cols-2 gap-6">
+  <figure class="flex flex-col items-center">
+    <img src={navigationSample.src} alt="導航設計" 
+         class="h-80 rounded-lg shadow-sm object-cover object-top" />
+    <figcaption class="mt-2 text-sm text-gray-500 font-medium text-center">
+      使用按鈕來導航
+    </figcaption>
+  </figure>
+
+  <figure class="flex flex-col items-center">
+    <img src={onePage.src} alt="單頁設計" 
+         class="h-80 rounded-lg shadow-md border-2 border-blue-100 object-cover object-top" />
+    <figcaption class="mt-2 text-sm text-blue-600 font-bold text-center">
+      將主要功能放在同一個頁面
+    </figcaption>
+  </figure>
+</div>
+
+同時，我們應該將主要的功能全部都放在同一個頁面，讓長輩不需要"滑動"，以減少操作的困難度。
+
+### 3. 好看不一定重要:
+
+對於長輩的 APP 來說，好看不一定重要，反而是好用才是最重要的。  
+我曾經花了比較多的時間來製作一個漂亮的 UI ，但是後來發現長輩們並不懂得"欣賞"這些 UI 的美感，反而是簡單、清晰的設計更受他們的喜愛，因此在設計上，我們應該以"好用"為優先考量，而不是"好看"。
+
+### 4. 不是所有的頁面都需要為長輩設計
+
+<div class="grid grid-cols-2 gap-6">
+  <figure class="flex flex-col items-center">
+    <img src={sample1.src} alt="導航設計" 
+         class="h-80 rounded-lg shadow-sm object-cover object-top" />
+    <figcaption class="mt-2 text-sm font-medium text-center">
+      血壓警告設定頁面
+    </figcaption>
+  </figure>
+
+  <figure class="flex flex-col items-center">
+    <img src={sample2.src} alt="單頁設計" 
+         class="h-80 rounded-lg shadow-md border-2 border-blue-100 object-cover object-top" />
+    <figcaption class="mt-2 text-sm  font-medium text-center">
+      分享權限設定頁面
+    </figcaption>
+  </figure>
+</div>
+雖然這個 APP 是為了長輩而設計的，但並不是所有的頁面都需要為長輩設計，特別是設定頁面，這些頁面通常是由年輕人來操作的，因此在這些頁面上，我們可以使用比較現代化的設計。
+
+## 訊息推送功能:
+
+### 1. 為什麼訊息功能很重要??
+
+經過我的研究發現，家族的成員並不常主動進入系統查看長輩的血壓紀錄，比起主動查看，家族成員更傾向被動的推送訊息。
+
+而本系統可以手動的設定血壓警告的門檻值，當長輩的血壓紀錄超過這個門檻值時，系統就會自動的推送訊息給家族成員，讓他們可以即時的知道長輩的血壓狀況，並且主動關心，或者是評估是否需要帶長輩去看醫生。
+
+### 2. 為甚麼要使用 Firebase Cloud Messaging??
+
+自己簽發訊息
+
+# 技術細節
+
+Github 連結: [https://github.com/Rduanchen/BP-together](https://github.com/Rduanchen/BP-together)
+
+- 前端：Vue 3, Pinia, Tailwind CSS
+- 後端：Express, PostgreSQL
+- 部署：Railway
+- 登入/訊息推送：Firebase Auth/Cloud Messaging
