@@ -1,0 +1,135 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+let posts = await getCollection("blog");
+posts = posts.filter(post => post.id.endsWith('/en'));
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const allTags = [...new Set(posts.map(post => post.data.tags || []).flat())];
+---
+
+<Layout>
+  <div class="max-w-4xl mx-auto px-6 py-12 text-gray-900 dark:text-white">
+    <h1 class="text-4xl font-bold mb-8">My Blog</h1>
+
+    <!-- Pagefind Search Box -->
+    <div id="search" class="mb-8 w-full rounded-xl bg-white/5 p-4 border border-gray-200 dark:border-white/10"></div>
+    
+    <!-- Tags Filter -->
+    <div class="mb-10 flex flex-wrap gap-2" id="tag-filters">
+      <button class="tag-btn active bg-blue-500 text-white px-3 py-1 rounded-full text-sm transition-colors cursor-pointer" data-tag="all">All</button>
+      {allTags.map(tag => (
+        <button class="tag-btn bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-white/70 hover:bg-blue-400 hover:text-white px-3 py-1 rounded-full text-sm transition-colors cursor-pointer" data-tag={tag}>
+          {tag}
+        </button>
+      ))}
+    </div>
+    
+    <div class="space-y-6" id="blog-posts">
+      {posts.map(post => (
+        <article class="blog-post p-6 bg-white/5 rounded-xl border border-white/10 hover:border-white/20 transition-colors" data-tags={(post.data.tags || []).join(',')}>
+          <h2 class="text-2xl font-semibold mb-2">
+            <a href={`/blog/${post.id.replace('/en', '')}`} class="hover:text-blue-400 transition-colors">
+              {post.data.title}
+            </a>
+          </h2>
+          <p class="text-white/70 mb-4">{post.data.description}</p>
+          <div class="flex items-center gap-4 text-sm text-white/50">
+            <time datetime={post.data.pubDate.toISOString()}>
+              {post.data.pubDate.toLocaleDateString()}
+            </time>
+            {post.data.tags && post.data.tags.length > 0 && (
+              <div class="flex gap-2">
+                {post.data.tags.map(tag => (
+                  <span class="bg-white/10 px-2 py-0.5 rounded text-xs">{tag}</span>
+                ))}
+              </div>
+            )}
+          </div>
+        </article>
+      ))}
+      <div id="no-posts" class="hidden text-center text-gray-500 py-8">No posts found with this tag.</div>
+    </div>
+  </div>
+
+  <!-- Load Pagefind UI assets -->
+  <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+  <script src="/pagefind/pagefind-ui.js" is:inline></script>
+
+  <script is:inline>
+    // 使用 astro:page-load 確保在 View Transitions 切換後依然能執行
+    document.addEventListener('astro:page-load', () => {
+      // Initialize Pagefind Search
+      if (typeof PagefindUI !== 'undefined') {
+        const searchContainer = document.getElementById('search');
+        // 避免重複初始化
+        if (searchContainer && searchContainer.innerHTML === '') {
+          new PagefindUI({ 
+            element: "#search", 
+            showSubResults: true,
+            bundlePath: "/pagefind/" // 確保在任何路徑下都能正確載入 Pagefind bundle
+          });
+        }
+      }
+
+      // Tag Filtering Logic
+      const buttons = document.querySelectorAll('.tag-btn');
+      const posts = document.querySelectorAll('.blog-post');
+      const noPostsMsg = document.getElementById('no-posts');
+
+      const params = new URLSearchParams(window.location.search);
+      const initialTag = params.get('tag');
+
+      function filterPosts(targetTag) {
+        let visibleCount = 0;
+        
+        buttons.forEach(btn => {
+          if (btn.dataset.tag === targetTag) {
+            btn.classList.add('bg-blue-500', 'text-white');
+            btn.classList.remove('bg-gray-200', 'dark:bg-white/10', 'text-gray-700', 'dark:text-white/70');
+          } else {
+            btn.classList.remove('bg-blue-500', 'text-white');
+            btn.classList.add('bg-gray-200', 'dark:bg-white/10', 'text-gray-700', 'dark:text-white/70');
+          }
+        });
+
+        posts.forEach(post => {
+          if (targetTag === 'all') {
+            post.style.display = 'block';
+            visibleCount++;
+          } else {
+            const tags = post.dataset.tags ? post.dataset.tags.split(',') : [];
+            if (tags.includes(targetTag)) {
+              post.style.display = 'block';
+              visibleCount++;
+            } else {
+              post.style.display = 'none';
+            }
+          }
+        });
+
+        if (visibleCount === 0) {
+          if(noPostsMsg) noPostsMsg.classList.remove('hidden');
+        } else {
+          if(noPostsMsg) noPostsMsg.classList.add('hidden');
+        }
+      }
+
+      buttons.forEach(btn => {
+        // 避免重複綁定，可以先移除舊的 event listener 或只在未綁定時綁定
+        // 但因為 Astro View Transitions 會替換 DOM，所以重新綁定是安全的
+        btn.addEventListener('click', () => {
+          const tag = btn.dataset.tag;
+          const newUrl = tag === 'all' ? window.location.pathname : `${window.location.pathname}?tag=${tag}`;
+          window.history.pushState({}, '', newUrl);
+          filterPosts(tag);
+        });
+      });
+
+      if (initialTag) {
+        filterPosts(initialTag);
+      }
+    });
+  </script>
+</Layout>
