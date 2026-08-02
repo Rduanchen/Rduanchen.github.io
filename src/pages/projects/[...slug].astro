@@ -5,8 +5,9 @@ import { Image } from 'astro:assets';
 
 export async function getStaticPaths() {
   const posts = await getCollection("projects");
-  return posts.map((post) => ({
-    params: { slug: post.id },
+  const enPosts = posts.filter((post) => post.id.endsWith("/en"));
+  return enPosts.map((post) => ({
+    params: { slug: post.id.replace("/en", "") },
     props: post,
   }));
 }

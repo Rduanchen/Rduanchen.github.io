@@ -4,8 +4,9 @@ import ContentLayout from "../../../layouts/ContentLayout.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("projects");
-  return posts.map((post) => ({
-    params: { slug: post.id },
+  const zhPosts = posts.filter((post) => post.id.endsWith("/zh-tw"));
+  return zhPosts.map((post) => ({
+    params: { slug: post.id.replace("/zh-tw", "") },
     props: post,
   }));
 }

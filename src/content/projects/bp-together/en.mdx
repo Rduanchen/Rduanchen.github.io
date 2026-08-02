@@ -1,0 +1,136 @@
+---
+title: "BP Together"
+subtitle: "A free blood pressure tracking system with family sharing"
+description: "A blood pressure tracking system that allows you to share data with family and friends, and set up high blood pressure alert notifications."
+pubDate: "2026-02-21"
+image: "./logo.png"
+tags: ["Vue", "Express", "PostgreSQL"]
+---
+
+import newSample from "./new-sample.png";
+import oldSample from "./old-sample.png";
+import navigationSample from "./navigation-sample.jpg";
+import onePage from "./one-page.jpg";
+import sample1 from "./sample1.jpg";
+import sample2 from "./sample2.jpg";
+
+### Start Using Now, Completely Free:
+
+[https://bp-together.rduan.org](https://bp-together.rduan.org)
+
+{/* <img src="./record-zh.png" alt="Blood pressure record page" /> */}
+
+![Blood pressure record page](./record-zh.png)
+
+# Project Origins
+
+With a family history of high blood pressure, many elders in my family need to monitor their blood pressure regularly. However, most blood pressure tracking apps on the market require a subscription and have user interfaces that are not friendly for seniors. Therefore, I decided to develop a free and easy-to-use blood pressure tracking system. It allows family members to easily record their blood pressure data, share it with relatives, and even set up high blood pressure alert notifications.
+
+# Pain Point Analysis
+
+- Most systems require payment for sharing features.
+- User interfaces are often unfriendly to elderly users.
+- Inability to set up high blood pressure alert notifications.
+- Incomplete sharing mechanisms.
+
+# Research Findings
+
+## About UI: What kind of interfaces do elders prefer?
+
+By observing my grandma's usage habits, I concluded that user interfaces preferred by elders share the following characteristics:
+
+### 1. Extremely Minimalistic Design
+
+> Any unnecessary text or UI elements will only cause confusion for the elders.
+
+<div class="grid grid-cols-2 gap-6">
+  <figure class="flex flex-col items-center">
+    <img src={oldSample.src} alt="Old Design" class="w-full h-auto rounded-lg shadow-sm" />
+    <figcaption class="mt-2 text-sm text-gray-500 font-medium">
+      Old version: Too much guiding text, which actually confused the elders.
+    </figcaption>
+  </figure>
+
+  <figure class="flex flex-col items-center">
+    <img src={newSample.src} alt="New Design" class="w-full h-auto rounded-lg shadow-md border-2 border-blue-100" />
+    <figcaption class="mt-2 text-sm text-blue-600 font-bold">
+      New version: Extremely minimalistic design, removing unnecessary guidance, much more suitable for elders.
+    </figcaption>
+  </figure>
+</div>
+
+In modern design, we are used to utilizing text to guide users through operations. But for elders, this text often causes confusion. It's better to remove this redundant information.
+In previous systems, I would add placeholders to tell users what to input, but for elders, these placeholders caused confusion as they didn't realize the placeholders needed to be replaced. Thus, we should remove them.
+
+### 2. Button Navigation
+
+Every extra operation adds a layer of difficulty for elders. Therefore, we should minimize the number of operational steps as much as possible.
+Observing my grandma, I found that perhaps due to dry skin, her touch gestures (like swiping) are not very responsive. Thus, in the design, we should minimize steps, especially "swiping" operations.
+
+<div class="grid grid-cols-2 gap-6">
+  <figure class="flex flex-col items-center">
+    <img src={navigationSample.src} alt="Navigation Design" 
+         class="h-80 rounded-lg shadow-sm object-cover object-top" />
+    <figcaption class="mt-2 text-sm text-gray-500 font-medium text-center">
+      Using buttons for navigation
+    </figcaption>
+  </figure>
+
+  <figure class="flex flex-col items-center">
+    <img src={onePage.src} alt="Single Page Design" 
+         class="h-80 rounded-lg shadow-md border-2 border-blue-100 object-cover object-top" />
+    <figcaption class="mt-2 text-sm text-blue-600 font-bold text-center">
+      Putting all primary functions on a single page
+    </figcaption>
+  </figure>
+</div>
+
+At the same time, we should put all primary functions on the same page, allowing elders to avoid "swiping", thereby reducing the difficulty of operation.
+
+### 3. Aesthetics aren't always important
+
+For an app aimed at elders, aesthetics are not necessarily important; usability is the top priority.
+I once spent a considerable amount of time crafting a beautiful UI, only to find that the elders didn't know how to "appreciate" these aesthetics. Instead, simple and clear designs were much more favored by them. Therefore, in our design, we should prioritize "usability" over "aesthetics".
+
+### 4. Not all pages need to be designed for elders
+
+<div class="grid grid-cols-2 gap-6">
+  <figure class="flex flex-col items-center">
+    <img src={sample1.src} alt="Alert Setting Page" 
+         class="h-80 rounded-lg shadow-sm object-cover object-top" />
+    <figcaption class="mt-2 text-sm font-medium text-center">
+      Blood Pressure Alert Setting Page
+    </figcaption>
+  </figure>
+
+  <figure class="flex flex-col items-center">
+    <img src={sample2.src} alt="Permission Setting Page" 
+         class="h-80 rounded-lg shadow-md border-2 border-blue-100 object-cover object-top" />
+    <figcaption class="mt-2 text-sm  font-medium text-center">
+      Sharing Permission Setting Page
+    </figcaption>
+  </figure>
+</div>
+
+Although this app is designed for elders, not all pages need to be tailored for them. Settings pages, in particular, are usually operated by younger family members, so we can use more modernized designs for these pages.
+
+## Push Notification Feature
+
+### 1. Why are push notifications important?
+
+My research revealed that family members rarely proactively open the system to check the elders' blood pressure records. Instead of checking proactively, they much prefer passive push notifications.
+
+This system allows you to manually set a blood pressure warning threshold. When the elder's recorded blood pressure exceeds this threshold, the system automatically pushes a notification to family members, allowing them to instantly know the elder's condition, proactively check in on them, or evaluate if they need to be taken to a doctor.
+
+### 2. Why use Firebase Cloud Messaging?
+
+It allows sending messages even when the web page is not open, and Google makes it free, which is awesome!
+
+# Technical Details
+
+Github Link: [https://github.com/Rduanchen/BP-together](https://github.com/Rduanchen/BP-together)
+
+- Frontend: Vue 3, Pinia, Tailwind CSS
+- Backend: Express, PostgreSQL
+- Deployment: Railway
+- Auth & Push Notifications: Firebase Auth / Cloud Messaging
