@@ -1,0 +1,53 @@
+---
+// This is a skeleton component for an Obsidian-style Knowledge Graph.
+// We use Vis.js (Network) via CDN for simplicity, but you can also install it via npm.
+---
+
+<div id="knowledge-graph-container" class="w-full h-[500px] border border-white/20 rounded-xl bg-gray-900 overflow-hidden">
+  <div id="knowledge-network" class="w-full h-full"></div>
+</div>
+
+<script is:inline src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 這裡可以換成讀取你所有的 markdown 檔案與它們的雙向連結
+    // 這是一個展示用的硬編碼神經網路圖資料
+    const nodes = new vis.DataSet([
+      { id: 1, label: "Home", color: "#60A5FA" },
+      { id: 2, label: "Blog", color: "#34D399" },
+      { id: 3, label: "Books", color: "#FBBF24" },
+      { id: 4, label: "Astro Setup", color: "#F87171" },
+      { id: 5, label: "Knowledge Graph", color: "#A78BFA" }
+    ]);
+
+    const edges = new vis.DataSet([
+      { from: 1, to: 2 },
+      { from: 1, to: 3 },
+      { from: 2, to: 4 },
+      { from: 3, to: 4 },
+      { from: 4, to: 5 },
+      { from: 5, to: 2 } // 雙向或循環連結
+    ]);
+
+    const container = document.getElementById("knowledge-network");
+    const data = { nodes, edges };
+    const options = {
+      nodes: {
+        shape: "dot",
+        size: 16,
+        font: { color: "#ffffff", size: 14 }
+      },
+      edges: {
+        color: "#ffffff",
+        width: 1,
+        smooth: { type: "continuous" }
+      },
+      physics: {
+        barnesHut: { gravitationalConstant: -2000, centralGravity: 0.3 }
+      }
+    };
+    
+    // 初始化 Graph
+    new vis.Network(container, data, options);
+  });
+</script>
