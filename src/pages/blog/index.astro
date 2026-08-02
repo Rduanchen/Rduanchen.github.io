@@ -1,5 +1,5 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import BlogLayout from "../../layouts/BlogLayout.astro";
 import { getCollection } from "astro:content";
 
 let posts = await getCollection("blog");
@@ -9,47 +9,65 @@ posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 const allTags = [...new Set(posts.map(post => post.data.tags || []).flat())];
 ---
 
-<Layout>
-  <div class="max-w-4xl mx-auto px-6 py-12 text-gray-900 dark:text-white">
-    <h1 class="text-4xl font-bold mb-8">My Blog</h1>
+<BlogLayout title="Blog | Rduan">
+  <div class="mx-auto max-w-4xl px-6 py-12">
+    <header class="mb-8">
+      <p class="text-sm uppercase tracking-wide text-muted-foreground">Writing</p>
+      <h1 class="text-4xl font-bold tracking-tight">My Blog</h1>
+    </header>
 
     <!-- Pagefind Search Box -->
-    <div id="search" class="mb-8 w-full rounded-xl bg-white/5 p-4 border border-gray-200 dark:border-white/10"></div>
-    
+    <div
+      id="search"
+      class="mb-8 w-full rounded-xl border border-border/70 bg-card/80 p-4 shadow-lg shadow-slate-300/30 backdrop-blur dark:shadow-black/30"
+    >
+    </div>
+
     <!-- Tags Filter -->
     <div class="mb-10 flex flex-wrap gap-2" id="tag-filters">
-      <button class="tag-btn active bg-blue-500 text-white px-3 py-1 rounded-full text-sm transition-colors cursor-pointer" data-tag="all">All</button>
+      <button
+        class="tag-btn cursor-pointer rounded-full bg-primary px-3 py-1 text-sm text-primary-foreground transition-colors"
+        data-tag="all"
+      >
+        All
+      </button>
       {allTags.map(tag => (
-        <button class="tag-btn bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-white/70 hover:bg-blue-400 hover:text-white px-3 py-1 rounded-full text-sm transition-colors cursor-pointer" data-tag={tag}>
+        <button
+          class="tag-btn cursor-pointer rounded-full bg-secondary px-3 py-1 text-sm text-secondary-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+          data-tag={tag}
+        >
           {tag}
         </button>
       ))}
     </div>
-    
+
     <div class="space-y-6" id="blog-posts">
       {posts.map(post => (
-        <article class="blog-post p-6 bg-white/5 rounded-xl border border-white/10 hover:border-white/20 transition-colors" data-tags={(post.data.tags || []).join(',')}>
-          <h2 class="text-2xl font-semibold mb-2">
-            <a href={`/blog/${post.id.replace('/en', '')}`} class="hover:text-blue-400 transition-colors">
+        <article
+          class="blog-post rounded-xl border border-border/70 bg-card/90 p-6 shadow-lg shadow-slate-300/30 backdrop-blur transition-colors hover:border-border dark:shadow-black/35"
+          data-tags={(post.data.tags || []).join(',')}
+        >
+          <h2 class="mb-2 text-2xl font-semibold">
+            <a href={`/blog/${post.id.replace('/en', '')}`} class="transition-colors hover:text-primary">
               {post.data.title}
             </a>
           </h2>
-          <p class="text-white/70 mb-4">{post.data.description}</p>
-          <div class="flex items-center gap-4 text-sm text-white/50">
+          <p class="mb-4 text-muted-foreground">{post.data.description}</p>
+          <div class="flex items-center gap-4 text-sm text-muted-foreground">
             <time datetime={post.data.pubDate.toISOString()}>
               {post.data.pubDate.toLocaleDateString()}
             </time>
             {post.data.tags && post.data.tags.length > 0 && (
               <div class="flex gap-2">
                 {post.data.tags.map(tag => (
-                  <span class="bg-white/10 px-2 py-0.5 rounded text-xs">{tag}</span>
+                  <span class="rounded bg-secondary px-2 py-0.5 text-xs text-secondary-foreground">{tag}</span>
                 ))}
               </div>
             )}
           </div>
         </article>
       ))}
-      <div id="no-posts" class="hidden text-center text-gray-500 py-8">No posts found with this tag.</div>
+      <div id="no-posts" class="hidden py-8 text-center text-muted-foreground">No posts found with this tag.</div>
     </div>
   </div>
 
@@ -65,8 +83,8 @@ const allTags = [...new Set(posts.map(post => post.data.tags || []).flat())];
         const searchContainer = document.getElementById('search');
         // 避免重複初始化
         if (searchContainer && searchContainer.innerHTML === '') {
-          new PagefindUI({ 
-            element: "#search", 
+          new PagefindUI({
+            element: "#search",
             showSubResults: true,
             bundlePath: "/pagefind/" // 確保在任何路徑下都能正確載入 Pagefind bundle
           });
@@ -78,19 +96,22 @@ const allTags = [...new Set(posts.map(post => post.data.tags || []).flat())];
       const posts = document.querySelectorAll('.blog-post');
       const noPostsMsg = document.getElementById('no-posts');
 
+      const activeClasses = ['bg-primary', 'text-primary-foreground'];
+      const idleClasses = ['bg-secondary', 'text-secondary-foreground', 'hover:bg-accent', 'hover:text-accent-foreground'];
+
       const params = new URLSearchParams(window.location.search);
       const initialTag = params.get('tag');
 
       function filterPosts(targetTag) {
         let visibleCount = 0;
-        
+
         buttons.forEach(btn => {
           if (btn.dataset.tag === targetTag) {
-            btn.classList.add('bg-blue-500', 'text-white');
-            btn.classList.remove('bg-gray-200', 'dark:bg-white/10', 'text-gray-700', 'dark:text-white/70');
+            btn.classList.add(...activeClasses);
+            btn.classList.remove(...idleClasses);
           } else {
-            btn.classList.remove('bg-blue-500', 'text-white');
-            btn.classList.add('bg-gray-200', 'dark:bg-white/10', 'text-gray-700', 'dark:text-white/70');
+            btn.classList.remove(...activeClasses);
+            btn.classList.add(...idleClasses);
           }
         });
 
@@ -132,4 +153,4 @@ const allTags = [...new Set(posts.map(post => post.data.tags || []).flat())];
       }
     });
   </script>
-</Layout>
+</BlogLayout>

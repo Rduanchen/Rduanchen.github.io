@@ -1,0 +1,62 @@
+---
+import ContentLayout from "./ContentLayout.astro";
+
+interface Props {
+  title?: string;
+}
+
+const { title = "Blog | Rduan" } = Astro.props as Props;
+---
+
+<ContentLayout title={title}>
+  <!-- Blog 專屬背景：與首頁 Aurora / Projects 的冷色調區隔，改用暖紫色系 -->
+  <div
+    class="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_12%_8%,rgba(251,191,36,0.20),transparent_45%),radial-gradient(circle_at_88%_0%,rgba(244,114,182,0.18),transparent_50%),linear-gradient(180deg,#fffbf5_0%,#fdf4ff_55%,#f1f5f9_100%)] dark:bg-[radial-gradient(circle_at_12%_8%,rgba(217,119,6,0.16),transparent_45%),radial-gradient(circle_at_88%_0%,rgba(168,85,247,0.18),transparent_50%),linear-gradient(180deg,#0b0a10_0%,#141021_55%,#050509_100%)]"
+  >
+  </div>
+
+  <slot />
+</ContentLayout>
+
+<style is:global>
+  /* Pagefind UI 主題化：跟隨網站的亮/暗色 token */
+  #search {
+    --pagefind-ui-scale: 0.85;
+    --pagefind-ui-primary: var(--foreground);
+    --pagefind-ui-text: var(--foreground);
+    --pagefind-ui-background: transparent;
+    --pagefind-ui-border: var(--border);
+    --pagefind-ui-tag: var(--muted);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 0.5rem;
+    --pagefind-ui-font: inherit;
+  }
+
+  #search .pagefind-ui__search-input,
+  #search .pagefind-ui__search-clear {
+    background-color: color-mix(in oklab, var(--card) 70%, transparent);
+    color: var(--foreground);
+  }
+
+  #search .pagefind-ui__search-input::placeholder {
+    color: var(--muted-foreground);
+  }
+
+  #search .pagefind-ui__result {
+    border-color: var(--border);
+  }
+
+  #search .pagefind-ui__result-link {
+    color: var(--foreground);
+  }
+
+  #search .pagefind-ui__result-excerpt,
+  #search .pagefind-ui__message {
+    color: var(--muted-foreground);
+  }
+
+  #search mark {
+    background-color: color-mix(in oklab, var(--primary) 22%, transparent);
+    color: inherit;
+  }
+</style>
