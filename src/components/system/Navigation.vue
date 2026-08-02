@@ -53,7 +53,7 @@ const switchLang = (targetLang) => {
 const navLinks = [
   { name: isZh ? "首頁" : "Home", href: homeHref, icon: "mdi-home-outline" },
   {
-    name: isZh ? "作品集" : "Portfolio",
+    name: isZh ? "專題研究" : "Projects",
     href: portfolioHref,
     icon: "mdi-briefcase-variant-outline",
   },

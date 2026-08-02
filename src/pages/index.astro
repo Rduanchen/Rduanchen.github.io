@@ -9,7 +9,6 @@ import { ui, defaultLang } from "../i18n/porfolio";
 const currentLang = Astro.currentLocale || defaultLang;
 // 2. 取得對應翻譯包 (若找不到則 fallback 到英文)
 const t = ui[currentLang as keyof typeof ui] || ui[defaultLang];
-
 const revealDelayMs = 50;
 
 // 3. 解決 CardSpotlight 顏色問題
