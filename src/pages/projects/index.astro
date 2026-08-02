@@ -4,9 +4,10 @@ import ContentLayout from "../../layouts/ContentLayout.astro";
 import CardSpotlight from "../../components/inspira/CardSpotlight.vue";
 import LampEffect from "../../components/inspira/LampEffect.vue";
 
-const projects = (await getCollection("projects")).sort(
+let projects = (await getCollection("projects")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+projects = projects.filter(post => post.id.endsWith('/en'));
 
 const locale = Astro.currentLocale === "zh-tw" ? "zh-TW" : "en-US";
 ---
@@ -23,7 +24,7 @@ const locale = Astro.currentLocale === "zh-tw" ? "zh-TW" : "en-US";
       <ul class="mt-10 grid list-none gap-6 p-0 md:grid-cols-2">
         {projects.map((post) => (
           <li class="h-full">
-            <a href={`/projects/${post.id}/`} class="block h-full">
+            <a href={`/projects/${post.id.replace('/en', '')}/`} class="block h-full">
               <CardSpotlight
                 client:load
                 class="h-full p-6 bg-card/95 ring-1 ring-border/70 shadow-xl shadow-black/20 dark:shadow-black/55 backdrop-blur-sm"
