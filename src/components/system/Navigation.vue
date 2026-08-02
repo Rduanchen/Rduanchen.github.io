@@ -57,6 +57,16 @@ const navLinks = [
     href: portfolioHref,
     icon: "mdi-briefcase-variant-outline",
   },
+  {
+    name: isZh ? "網誌" : "Blog",
+    href: isZh ? "/zh-tw/blog" : "/blog",
+    icon: "mdi-post-outline",
+  },
+  {
+    name: isZh ? "書本" : "Books",
+    href: isZh ? "/zh-tw/books" : "/books",
+    icon: "mdi-book-open-page-variant-outline",
+  },
 ];
 </script>
 
