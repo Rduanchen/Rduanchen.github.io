@@ -64,7 +64,7 @@ const navLinks = [
   },
   {
     name: isZh ? "書本" : "Books",
-    href: isZh ? "/zh-tw/books" : "/books",
+    href: isZh ? "/zh-tw/linear-algebra" : "/linear-algebra",
     icon: "mdi-book-open-page-variant-outline",
   },
 ];

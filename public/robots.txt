@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rduan.org/sitemap-index.xml
